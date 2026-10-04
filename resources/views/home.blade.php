@@ -80,7 +80,7 @@
                 <div class="w-full max-w-md p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl relative">
                     
                     <!-- Floating Chemistry Elements -->
-                    <div class="absolute -top-6 -left-6 p-4 rounded-2xl bg-tealAccent-500 text-navy-950 shadow-lg float-animation flex items-center space-x-3">
+                    <div class="absolute -top-8 -left-6 z-20 p-4 rounded-2xl bg-tealAccent-500 text-navy-950 shadow-xl float-animation flex items-center space-x-3">
                         <i class="fa-solid fa-vial-circle-check text-2xl"></i>
                         <div>
                             <div class="font-extrabold text-sm">Fe²⁺ & Zn²⁺</div>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="absolute -bottom-6 -right-6 p-4 rounded-2xl bg-coralAccent-500 text-white shadow-lg float-animation flex items-center space-x-3" style="animation-delay: 2s;">
+                    <div class="absolute -bottom-8 -right-6 z-20 p-4 rounded-2xl bg-coralAccent-500 text-white shadow-xl float-animation flex items-center space-x-3" style="animation-delay: 2s;">
                         <i class="fa-solid fa-heart-pulse text-2xl"></i>
                         <div>
                             <div class="font-extrabold text-sm">Ca²⁺ + Vit D</div>
@@ -96,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div class="space-y-4 text-left">
+                    <div class="space-y-4 text-left pt-8 pb-4">
                         <div class="flex items-center justify-between pb-3 border-b border-white/10">
                             <span class="text-xs font-bold uppercase tracking-wider text-teal-300">Pillar Utama Science</span>
                             <span class="text-xs px-2 py-0.5 rounded bg-teal-500/20 text-teal-300">HIMASKI UNTAD</span>

@@ -155,7 +155,7 @@
                 <!-- Col 1: About -->
                 <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center space-x-3">
-                        <img src="{{ asset('logo-smartedu.png') }}" alt="SMARTEDU Logo" class="w-10 h-10 object-contain">
+                        <img src="{{ asset('logo-smartedu.png') }}" alt="SMARTEDU Logo" class="w-24 h-15 object-contain group-hover:scale-50 transition-transform">
                         <span class="font-extrabold text-xl tracking-tight">SMARTEDU<span class="text-tealAccent-500">-NUTRICHEM</span></span>
                     </div>
                     <p class="text-slate-400 text-sm leading-relaxed max-w-md">
@@ -193,11 +193,11 @@
                         </li>
                         <li class="flex items-center space-x-3">
                             <i class="fa-regular fa-envelope text-tealAccent-500"></i>
-                            <span>himaski.untad@gmail.com</span>
+                            <span>email ????</span>
                         </li>
                         <li class="flex items-center space-x-3">
                             <i class="fa-solid fa-graduation-cap text-tealAccent-500"></i>
-                            <span>HIMASKI FMIPA Universitas Tadulako</span>
+                            <span>HIMASKI FKIP Universitas Tadulako</span>
                         </li>
                     </ul>
                 </div>
