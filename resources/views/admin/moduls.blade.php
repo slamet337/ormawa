@@ -37,13 +37,57 @@
         };
         this.showModal = true;
     },
+    compressCoverAndSubmit(formElement) {
+        const coverInput = formElement.querySelector('input[name="cover_image_upload"]');
+        const file = coverInput && coverInput.files[0];
+        
+        if (file && file.type.startsWith('image/')) {
+            this.uploadStatusText = 'Mengompres gambar sampul...';
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1200;
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    canvas.toBlob((blob) => {
+                        const formData = new FormData(formElement);
+                        if (blob) {
+                            formData.set('cover_image_upload', blob, file.name);
+                        }
+                        this.sendAjaxUpload(formData);
+                    }, 'image/jpeg', 0.82);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            const formData = new FormData(formElement);
+            this.sendAjaxUpload(formData);
+        }
+    },
     submitFormWithProgress(e) {
         e.preventDefault();
-        const formElement = e.target;
-        const formData = new FormData(formElement);
-        const xhr = new XMLHttpRequest();
         this.isUploading = true;
         this.uploadProgress = 0;
+        this.compressCoverAndSubmit(e.target);
+    },
+    sendAjaxUpload(formData) {
+        const xhr = new XMLHttpRequest();
         this.uploadStatusText = 'Menyiapkan pengiriman berkas...';
 
         xhr.upload.addEventListener('progress', (event) => {
@@ -66,16 +110,16 @@
                 window.location.reload();
             } else if (xhr.status === 503) {
                 this.isUploading = false;
-                alert('Server Domainesia membatasi waktu upload berkas fisik berukuran besar (Error 503 Timeout).\n\nSOLUSI TERBAIK & INSTAN:\nUpload berkas Anda ke Google Drive, lalu tempelkan linknya di kolom "Link Berkas (Google Drive)" pada form ini agar proses simpan instan (0 detik) dan tidak terputus server!');
+                alert('Server Domainesia membatasi durasi upload (Error 503 Timeout).\n\nJika berkas PDF Anda di atas 30MB, harap gunakan file PDF yang telah dikompres (misal: di bawah 20MB) agar pengunggahan cepat & sukses.');
             } else {
                 this.isUploading = false;
-                alert('Gagal menyimpan modul (Kode ' + xhr.status + '). Harap gunakan opsi Link Google Drive untuk berkas berukuran besar.');
+                alert('Gagal menyimpan modul (Kode ' + xhr.status + '). Silakan coba unggah kembali.');
             }
         });
 
         xhr.addEventListener('error', () => {
             this.isUploading = false;
-            alert('Koneksi terputus saat mengunggah berkas. Harap periksa jaringan internet Anda atau gunakan opsi Link Google Drive.');
+            alert('Koneksi terputus saat mengunggah berkas. Harap periksa jaringan internet Anda.');
         });
 
         xhr.open('POST', this.formAction);

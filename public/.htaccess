@@ -20,6 +20,16 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
+# Disable LiteSpeed Server Upload Timeout & Abort (Fix for 503 Timeout)
+<IfModule mod_env.c>
+    SetEnv no-gzip 1
+</IfModule>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule .* - [E=noabort:1]
+    RewriteRule .* - [E=nconc:1]
+</IfModule>
+
 # Increase Upload Limits for Large Files (e.g., 512MB)
 <IfModule mod_php.c>
     php_value upload_max_filesize 512M
