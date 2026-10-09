@@ -166,7 +166,7 @@
                         <a href="https://instagram.com/himaski_untad" target="_blank" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-tealAccent-500 hover:text-navy-900 flex items-center justify-center transition-colors">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
-                        <a href="mailto:himaski.untad@gmail.com" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-tealAccent-500 hover:text-navy-900 flex items-center justify-center transition-colors">
+                        <a href="mailto:ppkormawahimaski@gmail.com" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-tealAccent-500 hover:text-navy-900 flex items-center justify-center transition-colors" title="Kirim Email ke ppkormawahimaski@gmail.com">
                             <i class="fa-regular fa-envelope"></i>
                         </a>
                     </div>

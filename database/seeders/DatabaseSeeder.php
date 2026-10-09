@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'hero_title' => 'SMARTEDU-NUTRICHEM',
             'hero_subtitle' => 'Model Edukasi Berbasis Teknologi dan Kimia Terapan dalam Percepatan Penurunan Stunting',
             'hero_tagline' => 'Desa Bale, Kec. Tanantovea, Donggala — Inovasi Kimia Gizi untuk Indonesia Bebas Stunting',
-            'contact_email' => 'himaski.untad@gmail.com',
+            'contact_email' => 'ppkormawahimaski@gmail.com',
             'contact_phone' => '+62 822-9100-2456',
             'contact_instagram' => '@himaski_untad',
             'contact_location' => 'Desa Bale, Kecamatan Tanantovea, Kabupaten Donggala, Sulawesi Tengah',

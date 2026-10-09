@@ -1283,7 +1283,7 @@
                         </div>
                         <div>
                             <h4 class="text-xs uppercase font-bold text-teal-300">Email Resmi</h4>
-                            <p class="text-sm text-navy-800">{{ $settings['contact_email'] ?? 'himaski.untad@gmail.com' }}</p>
+                            <p class="text-sm text-navy-800">{{ $settings['contact_email'] ?? 'ppkormawahimaski@gmail.com' }}</p>
                         </div>
                     </div>
                 </div>
