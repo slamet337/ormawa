@@ -8,27 +8,76 @@
     showModal: false,
     isEdit: false,
     isUploading: false,
+    uploadProgress: 0,
+    uploadStatusText: '',
     formAction: '{{ route('admin.moduls.store') }}',
-    form: { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '' },
+    form: { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '', file_url: '' },
     openAddModal() {
         this.isEdit = false;
         this.isUploading = false;
+        this.uploadProgress = 0;
+        this.uploadStatusText = '';
         this.formAction = '{{ route('admin.moduls.store') }}';
-        this.form = { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '' };
+        this.form = { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '', file_url: '' };
         this.showModal = true;
     },
     openEditModal(item) {
         this.isEdit = true;
         this.isUploading = false;
+        this.uploadProgress = 0;
+        this.uploadStatusText = '';
         this.formAction = '/admin/modul/' + item.id;
         this.form = {
             title: item.title || '',
             category: item.category || 'Kimia & Nutrisi',
             badge: item.badge || '',
             description: item.description || '',
-            cover_image: item.cover_image || ''
+            cover_image: item.cover_image || '',
+            file_url: item.file_url || ''
         };
         this.showModal = true;
+    },
+    submitFormWithProgress(e) {
+        e.preventDefault();
+        const formElement = e.target;
+        const formData = new FormData(formElement);
+        const xhr = new XMLHttpRequest();
+        this.isUploading = true;
+        this.uploadProgress = 0;
+        this.uploadStatusText = 'Menyiapkan pengiriman berkas...';
+
+        xhr.upload.addEventListener('progress', (event) => {
+            if (event.lengthComputable) {
+                const percent = Math.round((event.loaded / event.total) * 100);
+                this.uploadProgress = percent;
+                const loadedMB = (event.loaded / (1024 * 1024)).toFixed(1);
+                const totalMB = (event.total / (1024 * 1024)).toFixed(1);
+                if (percent < 100) {
+                    this.uploadStatusText = `Mengunggah ke server... ${percent}% (${loadedMB} MB / ${totalMB} MB)`;
+                } else {
+                    this.uploadStatusText = 'Unggahan 100% selesai. Memproses & menyimpan data...';
+                }
+            }
+        });
+
+        xhr.addEventListener('load', () => {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                this.uploadStatusText = 'Berhasil disimpan! Memuat ulang...';
+                window.location.reload();
+            } else {
+                this.isUploading = false;
+                alert('Gagal menyimpan modul. Kode error: ' + xhr.status + '. Pastikan koneksi internet stabil atau gunakan link Google Drive jika file sangat besar.');
+            }
+        });
+
+        xhr.addEventListener('error', () => {
+            this.isUploading = false;
+            alert('Koneksi terputus saat mengunggah berkas. Harap periksa jaringan internet Anda atau gunakan opsi Link Google Drive.');
+        });
+
+        xhr.open('POST', this.formAction);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.send(formData);
     }
 }">
 
@@ -125,15 +174,15 @@
 
     <!-- Modul Form Modal (Add & Edit) -->
     <div x-show="showModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/70 backdrop-blur-sm" x-transition>
-        <div @click.away="showModal = false" class="bg-white rounded-3xl max-w-xl w-full p-8 shadow-2xl space-y-6 relative border border-slate-100 max-h-[90vh] overflow-y-auto">
+        <div @click.away="!isUploading && (showModal = false)" class="bg-white rounded-3xl max-w-xl w-full p-8 shadow-2xl space-y-6 relative border border-slate-100 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100">
                 <h3 class="text-lg font-extrabold text-navy-800" x-text="isEdit ? 'Sunting Modul Edukasi' : 'Tambah Modul Edukasi Baru'"></h3>
-                <button type="button" @click="showModal = false" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <button type="button" @click="showModal = false" :disabled="isUploading" class="text-slate-400 hover:text-slate-600 cursor-pointer disabled:opacity-50">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
 
-            <form :action="formAction" method="POST" enctype="multipart/form-data" @submit="isUploading = true" class="space-y-4">
+            <form :action="formAction" method="POST" enctype="multipart/form-data" @submit="submitFormWithProgress($event)" class="space-y-4">
                 @csrf
                 <template x-if="isEdit">
                     <input type="hidden" name="_method" value="PUT">
@@ -213,10 +262,11 @@
                     </div>
 
                     <!-- UNGGAH BERKAS PDF / DOKUMEN -->
-                    <div>
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
                         <label class="block text-xs font-bold uppercase text-slate-700 mb-1" x-text="isEdit ? 'Ganti Berkas Modul (Opsional)' : 'Unggah Berkas Modul'"></label>
                         <p class="text-[11px] text-slate-500 mb-2 font-medium">(Format PDF, DOC, DOCX, PPT, ZIP, RAR, MP4 — Maksimal 512 MB)</p>
-                        <label class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-navy-900 font-bold text-xs uppercase cursor-pointer transition shadow-sm">
+                        
+                        <label class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-navy-900 font-bold text-xs uppercase cursor-pointer transition shadow-sm">
                             <i class="fa-solid fa-file-pdf text-rose-500 text-sm"></i>
                             <span x-text="pdfName ? 'Ganti Berkas' : 'Pilih Berkas Modul'"></span>
                             <input type="file" name="file_upload" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar,.xls,.xlsx,.mp4" class="hidden" @change="
@@ -236,8 +286,33 @@
                         </label>
                         <div x-show="pdfName" class="mt-2 text-xs font-bold flex items-center space-x-1" :class="pdfSizeError ? 'text-rose-600' : 'text-emerald-700'">
                             <i :class="pdfSizeError ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-check-circle'"></i>
-                            <span x-text="'File PDF terpilih: ' + pdfName"></span>
+                            <span x-text="'File terpilih: ' + pdfName"></span>
                         </div>
+
+                        <!-- ATAU TEMPELKAN LINK GOOGLE DRIVE -->
+                        <div class="relative flex py-1 items-center pt-2">
+                            <div class="flex-grow border-t border-slate-200"></div>
+                            <span class="flex-shrink mx-2 text-[10px] text-slate-400 font-bold uppercase">Atau Gunakan Link Berkas (Google Drive / Cloud)</span>
+                            <div class="flex-grow border-t border-slate-200"></div>
+                        </div>
+
+                        <div>
+                            <input type="url" name="file_url" x-model="form.file_url" placeholder="https://drive.google.com/file/d/... atau link direct" class="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-xs font-medium outline-none focus:border-tealAccent-500">
+                            <span class="text-[10px] text-slate-500 mt-1 block">💡 <b>Tips:</b> Jika berkas PDF/Video sangat besar (di atas 50MB), simpan di Google Drive dan tempelkan linknya di sini agar proses simpan <b>instan (0 detik)</b> tanpa tergantung kecepatan upload internet.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REALTIME UPLOAD PROGRESS BAR -->
+                <div x-show="isUploading" class="p-4 rounded-2xl bg-teal-50/80 border border-teal-200 space-y-2.5" x-transition>
+                    <div class="flex items-center justify-between text-xs font-bold text-teal-900">
+                        <span x-text="uploadStatusText" class="flex items-center space-x-2">
+                            <i class="fa-solid fa-spinner animate-spin text-teal-600"></i>
+                        </span>
+                        <span x-text="uploadProgress + '%'" class="font-extrabold text-teal-700"></span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden shadow-inner">
+                        <div class="bg-gradient-to-r from-tealAccent-500 to-emerald-500 h-3 rounded-full transition-all duration-300" :style="'width: ' + uploadProgress + '%'"></div>
                     </div>
                 </div>
 
@@ -247,7 +322,7 @@
                         <template x-if="isUploading">
                             <span class="inline-flex items-center space-x-2">
                                 <i class="fa-solid fa-spinner animate-spin"></i>
-                                <span>Mengunggah...</span>
+                                <span x-text="uploadProgress + '% Mengunggah...'"></span>
                             </span>
                         </template>
                         <template x-if="!isUploading">
