@@ -39,6 +39,10 @@ class AdminController extends Controller
     public function settings()
     {
         $settings = SiteSetting::all()->pluck('value', 'key')->toArray();
+        if (empty($settings['contact_email']) || $settings['contact_email'] === 'himaski.untad@gmail.com') {
+            SiteSetting::set('contact_email', 'ppkormawahimaski@gmail.com');
+            $settings['contact_email'] = 'ppkormawahimaski@gmail.com';
+        }
         return view('admin.settings', compact('settings'));
     }
 

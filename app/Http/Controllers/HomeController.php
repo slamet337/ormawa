@@ -23,6 +23,12 @@ class HomeController extends Controller
             $settings[$s->key] = $s->value;
         }
 
+        // Auto-sync contact email without needing SSH seeder
+        if (empty($settings['contact_email']) || $settings['contact_email'] === 'himaski.untad@gmail.com') {
+            $settings['contact_email'] = 'ppkormawahimaski@gmail.com';
+            SiteSetting::set('contact_email', 'ppkormawahimaski@gmail.com');
+        }
+
         $moduls = Modul::latest()->get();
         $galleries = Gallery::latest()->get();
         $teams = Team::orderBy('order', 'asc')->get();
