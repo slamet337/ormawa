@@ -212,19 +212,19 @@
                         </div>
                     </div>
 
-                    <!-- UNGGAH BERKAS PDF -->
+                    <!-- UNGGAH BERKAS PDF / DOKUMEN -->
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1" x-text="isEdit ? 'Ganti Berkas PDF Modul (Opsional)' : 'Unggah Berkas PDF Modul'"></label>
-                        <p class="text-[11px] text-slate-500 mb-2 font-medium">(Format PDF, DOC, DOCX — Maksimal 128 MB)</p>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1" x-text="isEdit ? 'Ganti Berkas Modul (Opsional)' : 'Unggah Berkas Modul'"></label>
+                        <p class="text-[11px] text-slate-500 mb-2 font-medium">(Format PDF, DOC, DOCX, PPT, ZIP, RAR, MP4 — Maksimal 512 MB)</p>
                         <label class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-navy-900 font-bold text-xs uppercase cursor-pointer transition shadow-sm">
                             <i class="fa-solid fa-file-pdf text-rose-500 text-sm"></i>
-                            <span x-text="pdfName ? 'Ganti Berkas PDF' : 'Pilih Berkas PDF'"></span>
-                            <input type="file" name="file_upload" accept=".pdf,.doc,.docx,.ppt,.pptx" class="hidden" @change="
+                            <span x-text="pdfName ? 'Ganti Berkas' : 'Pilih Berkas Modul'"></span>
+                            <input type="file" name="file_upload" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar,.xls,.xlsx,.mp4" class="hidden" @change="
                                 if ($event.target.files[0]) {
                                     pdfName = $event.target.files[0].name;
-                                    if ($event.target.files[0].size > 128 * 1024 * 1024) {
+                                    if ($event.target.files[0].size > 512 * 1024 * 1024) {
                                         pdfSizeError = true;
-                                        alert('Perhatian: Ukuran file melebihi 128 MB (' + ($event.target.files[0].size / (1024*1024)).toFixed(1) + ' MB). Harap gunakan file < 128 MB agar tidak timeout saat diunggah.');
+                                        alert('Perhatian: Ukuran file melebihi 512 MB (' + ($event.target.files[0].size / (1024*1024)).toFixed(1) + ' MB). Harap gunakan file < 512 MB agar tidak timeout saat diunggah.');
                                     } else {
                                         pdfSizeError = false;
                                     }

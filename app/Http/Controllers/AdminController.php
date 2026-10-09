@@ -73,7 +73,7 @@ class AdminController extends Controller
             'cover_image' => 'nullable|string',
             'cover_image_upload' => 'nullable|image|max:10240',
             'file_url' => 'nullable|string',
-            'file_upload' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx|max:131072',
+            'file_upload' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar,xls,xlsx,mp4,avi,mkv|max:524288',
         ]);
 
         if ($request->hasFile('cover_image_upload')) {
@@ -104,7 +104,7 @@ class AdminController extends Controller
             'cover_image' => 'nullable|string',
             'cover_image_upload' => 'nullable|image|max:10240',
             'file_url' => 'nullable|string',
-            'file_upload' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx|max:131072',
+            'file_upload' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip,rar,xls,xlsx,mp4,avi,mkv|max:524288',
         ]);
 
         if ($request->hasFile('cover_image_upload')) {
