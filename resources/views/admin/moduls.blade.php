@@ -97,7 +97,7 @@
                 const loadedMB = (event.loaded / (1024 * 1024)).toFixed(1);
                 const totalMB = (event.total / (1024 * 1024)).toFixed(1);
                 if (percent < 100) {
-                    this.uploadStatusText = `Mengunggah ke server... ${percent}% (${loadedMB} MB / ${totalMB} MB)`;
+                    this.uploadStatusText = 'Mengunggah ke server... ' + percent + '% (' + loadedMB + ' MB / ' + totalMB + ' MB)';
                 } else {
                     this.uploadStatusText = 'Unggahan 100% selesai. Memproses & menyimpan data...';
                 }
