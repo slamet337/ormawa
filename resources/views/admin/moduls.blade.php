@@ -64,9 +64,12 @@
             if (xhr.status >= 200 && xhr.status < 400) {
                 this.uploadStatusText = 'Berhasil disimpan! Memuat ulang...';
                 window.location.reload();
+            } else if (xhr.status === 503) {
+                this.isUploading = false;
+                alert('Server Domainesia membatasi waktu upload berkas fisik berukuran besar (Error 503 Timeout).\n\nSOLUSI TERBAIK & INSTAN:\nUpload berkas Anda ke Google Drive, lalu tempelkan linknya di kolom "Link Berkas (Google Drive)" pada form ini agar proses simpan instan (0 detik) dan tidak terputus server!');
             } else {
                 this.isUploading = false;
-                alert('Gagal menyimpan modul. Kode error: ' + xhr.status + '. Pastikan koneksi internet stabil atau gunakan link Google Drive jika file sangat besar.');
+                alert('Gagal menyimpan modul (Kode ' + xhr.status + '). Harap gunakan opsi Link Google Drive untuk berkas berukuran besar.');
             }
         });
 
