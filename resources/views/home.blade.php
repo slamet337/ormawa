@@ -147,7 +147,7 @@
             <span class="text-xs font-bold uppercase tracking-widest text-tealAccent-600 bg-teal-50 px-3.5 py-1.5 rounded-full border border-teal-200">Inovasi Pengabdian</span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-navy-800">Mengapa SMARTEDU-NUTRICHEM?</h2>
             <p class="text-slate-600 text-base sm:text-lg leading-relaxed">
-                {{ $settings['about_description'] ?? 'SMARTEDU-NUTRICHEM hadir sebagai jembatan antara edukasi sains kimia terapan dan pemenuhan gizi spesifik untuk mencegah stunting sejak 1.000 Hari Pertama Kehidupan (HPK).' }}
+                {{ $settings['about_description'] ?? 'SMARTEDU-NUTRICHEM adalah inovasi program pengabdian masyarakat oleh Ormawa HIMASKI Universitas Tadulako. Program ini mengintegrasikan buku edukasi berbasis sains sederhana, media digital berbasis QR code dan video, pelatihan kader posyandu, serta sistem pemantauan perubahan perilaku keluarga. Pendekatan kimia terapan digunakan untuk menjelaskan hubungan antara komposisi zat gizi, proses pengolahan makanan, dan pengaruhnya terhadap pertumbuhan anak sehingga materi lebih mudah dipahami masyarakat.' }}
             </p>
         </div>
 
@@ -159,7 +159,7 @@
                 </div>
                 <h3 class="text-xl font-bold text-navy-800 mb-3">Pendekatan Sains Kimia</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">
-                    Menjelaskan reaksi bio-kimia nutrisi dalam tubuh secara sederhana, agar ibu-ibu memahami pentingnya penyerapan kalsium, zat besi, dan asam amino esensial.
+                    Menjelaskan mengenai gizi seimbang, peran zat gizi makro dan mikro dalam pertumbuhan anak, serta hubungan antara kekurangan gizi dengan risiko stunting. Penjelasan kimia terapan digunakan untuk membantu masyarakat memahami secara logis mengapa protein, zat besi, kalsium, dan zat gizi lainnya penting bagi pertumbuhan anak.
                 </p>
             </div>
 
@@ -170,7 +170,7 @@
                 </div>
                 <h3 class="text-xl font-bold text-navy-800 mb-3">Pemanfaatan Pangan Lokal</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">
-                    Mengoptimalkan kekayaan bahari Desa Bale seperti ikan segar dan hasil bumi menjadi menu MP-ASI bernilai gizi tinggi tanpa biaya mahal.
+                    Mengoptimalkan kekayaan pangan lokal yang ada di Desa Bale seperti Kelor dan hasil kebun B2SA lainnya menjadi menu MP-ASI bernilai gizi tinggi tanpa biaya mahal.
                 </p>
             </div>
 
@@ -181,7 +181,7 @@
                 </div>
                 <h3 class="text-xl font-bold text-navy-800 mb-3">Penguatan Kader Posyandu</h3>
                 <p class="text-slate-600 text-sm leading-relaxed">
-                    Membekali kader dengan buku saku, alat edukasi visual, dan kemampuan penyuluhan berkelanjutan yang berdampak jangka panjang.
+                    Membekali kader dengan modul edukasi, pelatihan, dan kemampuan penyuluhan berkelanjutan yang berdampak jangka panjang.
                 </p>
             </div>
         </div>
@@ -272,7 +272,7 @@
                     Video Edukasi Interaktif SMARTEDU
                 </h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Saksikan tayangan lengkap mengenai tips pembuatan MP-ASI fortifikasi alami, cara pemantauan grafik tumbuh kembang anak, dan simulasi eksperimen kimia gizi sederhana.
+                    Saksikan tayangan lengkap mengenai Edukasi Stunting, Pembuatan Pupuk Organik Cair untunk kebun B2SA, serta Perjalanan tim PPK ORMAWA HIMASKI dalam satu periode kegiatan PPK ORMAWA.
                 </p>
 
                 <div class="space-y-3 pt-2">

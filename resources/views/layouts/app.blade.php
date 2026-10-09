@@ -163,7 +163,7 @@
                         Inovasi Program Pengabdian Masyarakat oleh Ormawa HIMASKI Universitas Tadulako dalam percepatan penurunan stunting berbasis teknologi dan kimia terapan di Desa Bale, Donggala.
                     </p>
                     <div class="flex items-center space-x-3 pt-2">
-                        <a href="https://instagram.com/himaski_untad" target="_blank" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-tealAccent-500 hover:text-navy-900 flex items-center justify-center transition-colors">
+                        <a href="https://www.instagram.com/ppkormawa.himaski?cplk=ZXBwOTV4azJoMnVs" target="_blank" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-tealAccent-500 hover:text-navy-900 flex items-center justify-center transition-colors">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
                         <a href="mailto:ppkormawahimaski@gmail.com" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-tealAccent-500 hover:text-navy-900 flex items-center justify-center transition-colors" title="Kirim Email ke ppkormawahimaski@gmail.com">
@@ -194,7 +194,7 @@
                         </li>
                         <li class="flex items-center space-x-3">
                             <i class="fa-regular fa-envelope text-tealAccent-500"></i>
-                            <span>email ????</span>
+                            <span>ppkormawahimaski@gmail.com</span>
                         </li>
                         <li class="flex items-center space-x-3">
                             <i class="fa-solid fa-graduation-cap text-tealAccent-500"></i>
