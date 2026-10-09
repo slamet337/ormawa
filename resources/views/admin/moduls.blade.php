@@ -4,129 +4,7 @@
 @section('page_header', 'Manajemen Modul Edukasi Digital')
 
 @section('content')
-<div class="space-y-8" x-data="{
-    showModal: false,
-    isEdit: false,
-    isUploading: false,
-    uploadProgress: 0,
-    uploadStatusText: '',
-    formAction: '{{ route('admin.moduls.store') }}',
-    form: { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '', file_url: '' },
-    openAddModal() {
-        this.isEdit = false;
-        this.isUploading = false;
-        this.uploadProgress = 0;
-        this.uploadStatusText = '';
-        this.formAction = '{{ route('admin.moduls.store') }}';
-        this.form = { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '', file_url: '' };
-        this.showModal = true;
-    },
-    openEditModal(item) {
-        this.isEdit = true;
-        this.isUploading = false;
-        this.uploadProgress = 0;
-        this.uploadStatusText = '';
-        this.formAction = '/admin/modul/' + item.id;
-        this.form = {
-            title: item.title || '',
-            category: item.category || 'Kimia & Nutrisi',
-            badge: item.badge || '',
-            description: item.description || '',
-            cover_image: item.cover_image || '',
-            file_url: item.file_url || ''
-        };
-        this.showModal = true;
-    },
-    compressCoverAndSubmit(formElement) {
-        const coverInput = formElement.querySelector('input[name="cover_image_upload"]');
-        const file = coverInput && coverInput.files[0];
-        
-        if (file && file.type.startsWith('image/')) {
-            this.uploadStatusText = 'Mengompres gambar sampul...';
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-                    const maxDim = 1200;
-                    if (width > maxDim || height > maxDim) {
-                        if (width > height) {
-                            height = Math.round((height * maxDim) / width);
-                            width = maxDim;
-                        } else {
-                            width = Math.round((width * maxDim) / height);
-                            height = maxDim;
-                        }
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    canvas.toBlob((blob) => {
-                        const formData = new FormData(formElement);
-                        if (blob) {
-                            formData.set('cover_image_upload', blob, file.name);
-                        }
-                        this.sendAjaxUpload(formData);
-                    }, 'image/jpeg', 0.82);
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            const formData = new FormData(formElement);
-            this.sendAjaxUpload(formData);
-        }
-    },
-    submitFormWithProgress(e) {
-        e.preventDefault();
-        this.isUploading = true;
-        this.uploadProgress = 0;
-        this.compressCoverAndSubmit(e.target);
-    },
-    sendAjaxUpload(formData) {
-        const xhr = new XMLHttpRequest();
-        this.uploadStatusText = 'Menyiapkan pengiriman berkas...';
-
-        xhr.upload.addEventListener('progress', (event) => {
-            if (event.lengthComputable) {
-                const percent = Math.round((event.loaded / event.total) * 100);
-                this.uploadProgress = percent;
-                const loadedMB = (event.loaded / (1024 * 1024)).toFixed(1);
-                const totalMB = (event.total / (1024 * 1024)).toFixed(1);
-                if (percent < 100) {
-                    this.uploadStatusText = 'Mengunggah ke server... ' + percent + '% (' + loadedMB + ' MB / ' + totalMB + ' MB)';
-                } else {
-                    this.uploadStatusText = 'Unggahan 100% selesai. Memproses & menyimpan data...';
-                }
-            }
-        });
-
-        xhr.addEventListener('load', () => {
-            if (xhr.status >= 200 && xhr.status < 400) {
-                this.uploadStatusText = 'Berhasil disimpan! Memuat ulang...';
-                window.location.reload();
-            } else if (xhr.status === 503) {
-                this.isUploading = false;
-                alert('Server Domainesia membatasi durasi upload (Error 503 Timeout).\n\nJika berkas PDF Anda di atas 30MB, harap gunakan file PDF yang telah dikompres (misal: di bawah 20MB) agar pengunggahan cepat & sukses.');
-            } else {
-                this.isUploading = false;
-                alert('Gagal menyimpan modul (Kode ' + xhr.status + '). Silakan coba unggah kembali.');
-            }
-        });
-
-        xhr.addEventListener('error', () => {
-            this.isUploading = false;
-            alert('Koneksi terputus saat mengunggah berkas. Harap periksa jaringan internet Anda.');
-        });
-
-        xhr.open('POST', this.formAction);
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.send(formData);
-    }
-}">
+<div class="space-y-8" x-data="modulsManager()">
 
     <!-- Header Actions -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -345,7 +223,7 @@
 
                         <div>
                             <input type="url" name="file_url" x-model="form.file_url" placeholder="https://drive.google.com/file/d/... atau link direct" class="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-xs font-medium outline-none focus:border-tealAccent-500">
-                            <span class="text-[10px] text-slate-500 mt-1 block">💡 <b>Tips:</b> Jika berkas PDF/Video sangat besar (di atas 50MB), simpan di Google Drive dan tempelkan linknya di sini agar proses simpan <b>instan (0 detik)</b> tanpa tergantung kecepatan upload internet.</span>
+                            <span class="text-[10px] text-slate-500 mt-1 block">💡 <b>Tips:</b> Jika berkas PDF/Video sangat besar (di atas 30MB), simpan di Google Drive dan tempelkan linknya di sini agar proses simpan <b>instan (0 detik)</b> tanpa tergantung kecepatan upload internet.</span>
                         </div>
                     </div>
                 </div>
@@ -382,4 +260,132 @@
     </div>
 
 </div>
+
+<script>
+function modulsManager() {
+    return {
+        showModal: false,
+        isEdit: false,
+        isUploading: false,
+        uploadProgress: 0,
+        uploadStatusText: '',
+        formAction: '{{ route('admin.moduls.store') }}',
+        form: { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '', file_url: '' },
+        openAddModal() {
+            this.isEdit = false;
+            this.isUploading = false;
+            this.uploadProgress = 0;
+            this.uploadStatusText = '';
+            this.formAction = '{{ route('admin.moduls.store') }}';
+            this.form = { title: '', category: 'Kimia & Nutrisi', badge: '', description: '', cover_image: '', file_url: '' };
+            this.showModal = true;
+        },
+        openEditModal(item) {
+            this.isEdit = true;
+            this.isUploading = false;
+            this.uploadProgress = 0;
+            this.uploadStatusText = '';
+            this.formAction = '/admin/modul/' + item.id;
+            this.form = {
+                title: item.title || '',
+                category: item.category || 'Kimia & Nutrisi',
+                badge: item.badge || '',
+                description: item.description || '',
+                cover_image: item.cover_image || '',
+                file_url: item.file_url || ''
+            };
+            this.showModal = true;
+        },
+        compressCoverAndSubmit(formElement) {
+            const coverInput = formElement.querySelector('input[name="cover_image_upload"]');
+            const file = coverInput && coverInput.files[0];
+            
+            if (file && file.type.startsWith('image/')) {
+                this.uploadStatusText = 'Mengompres gambar sampul...';
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const maxDim = 1200;
+                        if (width > maxDim || height > maxDim) {
+                            if (width > height) {
+                                height = Math.round((height * maxDim) / width);
+                                width = maxDim;
+                            } else {
+                                width = Math.round((width * maxDim) / height);
+                                height = maxDim;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob((blob) => {
+                            const formData = new FormData(formElement);
+                            if (blob) {
+                                formData.set('cover_image_upload', blob, file.name);
+                            }
+                            this.sendAjaxUpload(formData);
+                        }, 'image/jpeg', 0.82);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                const formData = new FormData(formElement);
+                this.sendAjaxUpload(formData);
+            }
+        },
+        submitFormWithProgress(e) {
+            e.preventDefault();
+            this.isUploading = true;
+            this.uploadProgress = 0;
+            this.compressCoverAndSubmit(e.target);
+        },
+        sendAjaxUpload(formData) {
+            const xhr = new XMLHttpRequest();
+            this.uploadStatusText = 'Menyiapkan pengiriman berkas...';
+
+            xhr.upload.addEventListener('progress', (event) => {
+                if (event.lengthComputable) {
+                    const percent = Math.round((event.loaded / event.total) * 100);
+                    this.uploadProgress = percent;
+                    const loadedMB = (event.loaded / (1024 * 1024)).toFixed(1);
+                    const totalMB = (event.total / (1024 * 1024)).toFixed(1);
+                    if (percent < 100) {
+                        this.uploadStatusText = 'Mengunggah ke server... ' + percent + '% (' + loadedMB + ' MB / ' + totalMB + ' MB)';
+                    } else {
+                        this.uploadStatusText = 'Unggahan 100% selesai. Memproses & menyimpan data...';
+                    }
+                }
+            });
+
+            xhr.addEventListener('load', () => {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    this.uploadStatusText = 'Berhasil disimpan! Memuat ulang...';
+                    window.location.reload();
+                } else if (xhr.status === 503) {
+                    this.isUploading = false;
+                    alert('Server Domainesia membatasi durasi upload (Error 503 Timeout).\n\nJika berkas PDF Anda di atas 30MB, harap gunakan file PDF yang telah dikompres (misal: di bawah 20MB) agar pengunggahan cepat & sukses.');
+                } else {
+                    this.isUploading = false;
+                    alert('Gagal menyimpan modul (Kode ' + xhr.status + '). Silakan coba unggah kembali.');
+                }
+            });
+
+            xhr.addEventListener('error', () => {
+                this.isUploading = false;
+                alert('Koneksi terputus saat mengunggah berkas. Harap periksa jaringan internet Anda.');
+            });
+
+            xhr.open('POST', this.formAction);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.send(formData);
+        }
+    };
+}
+</script>
 @endsection
